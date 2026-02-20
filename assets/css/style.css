@@ -1355,3 +1355,166 @@ section {
   color: #fff;
   text-decoration: none;
 }
+
+/*--------------------------------------------------------------
+# Bayau Homepage Revamp Overrides
+--------------------------------------------------------------*/
+:root {
+  --bayau-primary: #2f9e44;
+  --bayau-primary-dark: #237a35;
+  --bayau-soft: #eef9f0;
+  --bayau-text: #2f3b33;
+}
+
+body {
+  color: var(--bayau-text);
+}
+
+#header {
+  backdrop-filter: saturate(140%) blur(6px);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover > a {
+  color: var(--bayau-primary);
+}
+
+.get-started-btn {
+  background: linear-gradient(135deg, var(--bayau-primary), #41b95c);
+  box-shadow: 0 8px 18px rgba(47, 158, 68, 0.22);
+}
+
+.get-started-btn:hover {
+  background: linear-gradient(135deg, #41b95c, var(--bayau-primary));
+}
+
+#hero {
+  background-image: linear-gradient(120deg, rgba(9, 44, 20, 0.55), rgba(9, 44, 20, 0.15)), url("../img/p1.jpg");
+  background-position: center;
+}
+
+#hero .btn-get-started {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--bayau-primary), #41b95c);
+  box-shadow: 0 10px 24px rgba(47, 158, 68, 0.25);
+}
+
+#hero .btn-get-started:hover {
+  background: linear-gradient(135deg, #41b95c, var(--bayau-primary));
+  border-color: transparent;
+}
+
+.about .content h3,
+.section-title p {
+  color: #273229;
+}
+
+.about .content ul i {
+  color: var(--bayau-primary);
+}
+
+.why-us .content {
+  background: linear-gradient(160deg, var(--bayau-primary), var(--bayau-primary-dark));
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(47, 158, 68, 0.22);
+}
+
+.why-us .icon-boxes .icon-box {
+  border-radius: 12px;
+  border: 1px solid #e5efe6;
+  box-shadow: 0 8px 20px rgba(28, 43, 31, 0.05);
+}
+
+.why-us .icon-boxes .icon-box i {
+  background: var(--bayau-soft);
+  color: var(--bayau-primary);
+}
+
+.journey {
+  background: linear-gradient(180deg, #f9fcf9 0%, #f3faf4 100%);
+}
+
+.journey .journey-card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e8f1ea;
+  border-radius: 14px;
+  padding: 28px 24px;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 24px rgba(20, 34, 24, 0.05);
+}
+
+.journey .journey-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(20, 34, 24, 0.08);
+}
+
+.journey .journey-card .step {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bayau-soft);
+  color: var(--bayau-primary-dark);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.journey .journey-card h4 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.journey .journey-card p {
+  margin-bottom: 0;
+  color: #5a665d;
+}
+
+.cta {
+  background: linear-gradient(130deg, #173620 0%, #24542f 40%, #2f9e44 100%);
+  color: #fff;
+}
+
+.cta h3 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cta p {
+  margin-bottom: 0;
+  color: #ddf8e3;
+}
+
+.cta .cta-btn {
+  display: inline-block;
+  margin-top: 16px;
+  background: #fff;
+  color: #1f4c2a;
+  border-radius: 50px;
+  padding: 11px 24px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.cta .cta-btn:hover {
+  background: var(--bayau-soft);
+  color: #13381d;
+}
+
+#footer .footer-top {
+  background: #f5faf5;
+}
+
+#footer .social-links a {
+  background: var(--bayau-primary);
+}
+
+#footer .social-links a:hover {
+  background: var(--bayau-primary-dark);
+}
