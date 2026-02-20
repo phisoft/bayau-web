@@ -405,7 +405,7 @@ h1, h2, h3, h4, h5, h6 {
 #hero h1 {
   margin: 0;
   font-size: 48px;
-  font-weight: 700;
+  font-weight: 300;
   line-height: 56px;
   color: #fff;
   font-family: "Poppins", sans-serif;
