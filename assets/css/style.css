@@ -125,7 +125,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
 }
 #header .logo a {
-  color: #4E9A06;
+  color: var(--bayau-primary);
 }
 #header .logo img {
   max-height: 40px;
@@ -1493,19 +1493,21 @@ section {
 # Bayau Homepage Revamp Overrides
 --------------------------------------------------------------*/
 :root {
-  --bayau-primary: #2f9e44;
-  --bayau-primary-dark: #237a35;
-  --bayau-soft: #eef9f0;
-  --bayau-text: #2f3b33;
+  --bayau-primary: #8b5e3c;
+  --bayau-primary-dark: #6f452b;
+  --bayau-soft: #f6efe4;
+  --bayau-text: #3b2f26;
 }
 
 body {
   color: var(--bayau-text);
+  background: #fbf7f1;
 }
 
 #header {
   backdrop-filter: saturate(140%) blur(6px);
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(250, 244, 235, 0.96);
+  box-shadow: 0 4px 14px rgba(62, 39, 24, 0.08);
 }
 
 .navbar a:hover,
@@ -1525,18 +1527,33 @@ body {
 }
 
 #hero {
-  background-image: linear-gradient(120deg, rgba(9, 44, 20, 0.55), rgba(9, 44, 20, 0.15)), url("../img/p1.jpg");
+  background-image: linear-gradient(120deg, rgba(61, 40, 25, 0.58), rgba(61, 40, 25, 0.24)), url("../img/p1.jpg");
   background-position: center;
+}
+
+#hero:before {
+  background: rgba(44, 30, 20, 0.25);
+}
+
+#hero h1,
+#hero h2,
+.cta h3,
+.section-title p {
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+#hero h2 {
+  color: #f2e7d8;
 }
 
 #hero .btn-get-started {
   border-color: transparent;
-  background: linear-gradient(135deg, var(--bayau-primary), #41b95c);
-  box-shadow: 0 10px 24px rgba(47, 158, 68, 0.25);
+  background: linear-gradient(135deg, #9a6c48, var(--bayau-primary-dark));
+  box-shadow: 0 10px 24px rgba(66, 42, 26, 0.3);
 }
 
 #hero .btn-get-started:hover {
-  background: linear-gradient(135deg, #41b95c, var(--bayau-primary));
+  background: linear-gradient(135deg, #a67a57, var(--bayau-primary));
   border-color: transparent;
 }
 
@@ -1550,15 +1567,16 @@ body {
 }
 
 .why-us .content {
-  background: linear-gradient(160deg, var(--bayau-primary), var(--bayau-primary-dark));
+  background: linear-gradient(160deg, #9a6c48, var(--bayau-primary-dark));
   border-radius: 14px;
-  box-shadow: 0 14px 30px rgba(47, 158, 68, 0.22);
+  box-shadow: 0 14px 30px rgba(66, 42, 26, 0.2);
 }
 
 .why-us .icon-boxes .icon-box {
   border-radius: 12px;
-  border: 1px solid #e5efe6;
-  box-shadow: 0 8px 20px rgba(28, 43, 31, 0.05);
+  border: 1px solid #eadfce;
+  box-shadow: 0 8px 20px rgba(49, 33, 22, 0.06);
+  background: #fffaf4;
 }
 
 .why-us .icon-boxes .icon-box i {
@@ -1567,22 +1585,22 @@ body {
 }
 
 .journey {
-  background: linear-gradient(180deg, #f9fcf9 0%, #f3faf4 100%);
+  background: linear-gradient(180deg, #fbf7f1 0%, #f4eadf 100%);
 }
 
 .journey .journey-card {
   width: 100%;
-  background: #fff;
-  border: 1px solid #e8f1ea;
+  background: #fffaf4;
+  border: 1px solid #eadfce;
   border-radius: 14px;
   padding: 28px 24px;
   transition: 0.3s ease;
-  box-shadow: 0 10px 24px rgba(20, 34, 24, 0.05);
+  box-shadow: 0 10px 24px rgba(49, 33, 22, 0.06);
 }
 
 .journey .journey-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 30px rgba(20, 34, 24, 0.08);
+  box-shadow: 0 14px 30px rgba(49, 33, 22, 0.1);
 }
 
 .journey .journey-card .step {
@@ -1609,7 +1627,7 @@ body {
 }
 
 .cta {
-  background: linear-gradient(130deg, #173620 0%, #24542f 40%, #2f9e44 100%);
+  background: linear-gradient(130deg, #4b3224 0%, #6f452b 45%, #8b5e3c 100%);
   color: #fff;
 }
 
@@ -1641,7 +1659,7 @@ body {
 }
 
 #footer .footer-top {
-  background: #f5faf5;
+  background: #f3ebe0;
 }
 
 #footer .social-links a {
