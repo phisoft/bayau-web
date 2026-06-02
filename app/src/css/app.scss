@@ -1,0 +1,24 @@
+// Bayau app global styles
+
+body {
+  background: #fdfaf5;
+}
+
+.q-page {
+  background: #fdfaf5;
+}
+
+.q-card {
+  border-radius: 16px;
+}
+
+.q-drawer {
+  background: #fffdf8;
+}
+
+.q-item.q-router-link--active,
+.q-item--active {
+  color: var(--q-primary);
+  background: rgba(45, 138, 78, 0.08);
+  border-radius: 12px;
+}

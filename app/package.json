@@ -1,0 +1,39 @@
+{
+  "name": "bayau-app",
+  "version": "1.0.0",
+  "description": "Bayau — Family Tree App",
+  "productName": "Bayau",
+  "author": "Bayau",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,json}\""
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.16.0",
+    "axios": "^1.7.0",
+    "pinia": "^3.0.4",
+    "quasar": "^2.15.0",
+    "tinybase": "^8.4.2",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^2.0.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^3.2.0",
+    "sass-embedded": "^1.80.0",
+    "typescript": "^5.4.0",
+    "vue-tsc": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
