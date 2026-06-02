@@ -1,336 +1,523 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Bayau | Family Tree App for Families</title>
+        <meta
+            content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite."
+            name="description"
+        />
+        <meta
+            content="family tree app, family app, genealogy app, family history, ancestry, relatives, Bayau"
+            name="keywords"
+        />
+        <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+        <meta name="author" content="Bayau" />
+        <meta name="theme-color" content="#2f9e44" />
+        <link rel="canonical" href="https://bayau.com/" />
+        <link rel="alternate" hreflang="en" href="https://bayau.com/" />
+        <link rel="alternate" hreflang="x-default" href="https://bayau.com/" />
 
-    <title>Bayau | Family Tree App for Families</title>
-    <meta content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite." name="description">
-    <meta content="family tree app, family app, genealogy app, family history, ancestry, relatives, Bayau" name="keywords">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="author" content="Bayau">
-    <meta name="theme-color" content="#2f9e44">
-    <link rel="canonical" href="https://bayau.com/">
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Bayau" />
+        <meta
+            property="og:title"
+            content="Bayau | Family Tree App for Families"
+        />
+        <meta
+            property="og:description"
+            content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite."
+        />
+        <meta property="og:url" content="https://bayau.com/" />
+        <meta
+            property="og:image"
+            content="https://bayau.com/assets/img/bayau_logo.png"
+        />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:site_name" content="Bayau">
-    <meta property="og:title" content="Bayau | Family Tree App for Families">
-    <meta property="og:description" content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite.">
-    <meta property="og:url" content="https://bayau.com/">
-    <meta property="og:image" content="https://bayau.com/assets/img/bayau_logo.png">
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="Bayau | Family Tree App for Families"
+        />
+        <meta
+            name="twitter:description"
+            content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite."
+        />
+        <meta
+            name="twitter:image"
+            content="https://bayau.com/assets/img/bayau_logo.png"
+        />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bayau | Family Tree App for Families">
-    <meta name="twitter:description" content="Bayau helps families honor elders, traditions, and shared history. Every family tree is private by default and only visible to relatives you invite.">
-    <meta name="twitter:image" content="https://bayau.com/assets/img/bayau_logo.png">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon" />
+        <link href="assets/img/bayau_favicon.png" rel="apple-touch-icon" />
+        <link rel="preload" as="image" href="assets/img/p1.jpg" />
 
-    <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/bayau_favicon.png" rel="bayau_favicon">
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-        rel="stylesheet">
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+            rel="stylesheet"
+        />
+        <link
+            href="assets/vendor/boxicons/css/boxicons.min.css"
+            rel="stylesheet"
+        />
+        <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet" />
+    </head>
 
-    <!-- Vendor CSS Files -->
-    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
-    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-</head>
+    <body>
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center">
+                <h1 class="logo me-auto"><a href="index.html">B A Y A U</a></h1>
+                <nav id="navbar" class="navbar order-last order-lg-0">
+                    <ul>
+                        <li><a href="#journey">How It Works</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                    <i
+                        class="bi bi-list mobile-nav-toggle"
+                        aria-label="Toggle navigation"
+                    ></i>
+                </nav>
+                <!-- .navbar -->
 
-<body>
-
-    <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top">
-        <div class="container d-flex align-items-center">
-
-            <h1 class="logo me-auto"><a href="index.html">B A Y A U</a></h1>
-            <nav id="navbar" class="navbar order-last order-lg-0">
-                <ul>
-                    <li><a href="#journey">How It Works</a></li>
-                    <li><a href="#faq">FAQ</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
-            <div class="header-actions d-flex align-items-center">
-                <a href="https://app.bayau.com/login" class="sign-in-btn">Sign In</a>
+                <div class="header-actions d-flex align-items-center">
+                    <a href="https://app.bayau.com/login" class="sign-in-btn"
+                        >Sign In</a
+                    >
+                </div>
             </div>
+        </header>
+        <!-- End Header -->
 
-        </div>
-    </header><!-- End Header -->
-
-    <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex justify-content-center align-items-center">
-        <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
-            <h1>Build Your Family Tree, Together.</h1>
-            <h2>Your Family. Your Story. Your Bayau.</h2>
-            <a href="https://app.bayau.com" class="btn-get-started">Start Your Family Tree</a>
-        </div>
-    </section><!-- End Hero -->
-
-    <main id="main">
-        <!-- ======= Why Us Section ======= -->
-        <section id="services" class="why-us">
-            <div class="container" data-aos="fade-up">
-
-                <div class="row">
-                    <div class="col-lg-4 d-flex align-items-stretch">
-                        <div class="content">
-                            <h3>Family Tree Services That Grow With Your Family</h3>
-                            <p>
-                                Whether you are recording your immediate household or tracing roots across generations, Bayau gives you practical tools to build a trusted, private family record together.
-                            </p>
-                            <div class="text-center">
-                                <a href="https://app.bayau.com" class="more-btn">Learn More <i
-                                        class="bx bx-chevron-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="icon-boxes d-flex flex-column justify-content-center">
-                            <div class="row">
-                                <div class="col-xl-4 d-flex align-items-stretch">
-                                    <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-sitemap"></i>
-                                        <h4>Smart Tree Builder</h4>
-                                        <p>Add parents, siblings, spouses, and children quickly—even across large extended families.</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 d-flex align-items-stretch">
-                                    <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-group"></i>
-                                        <h4>Family Collaboration</h4>
-                                        <p>Invite relatives living in different towns or overseas to co-manage profiles and keep details accurate.</p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 d-flex align-items-stretch">
-                                    <div class="icon-box mt-4 mt-xl-0">
-                                        <i class="bx bx-photo-album"></i>
-                                        <h4>Private Memory Vault</h4>
-                                        <p>Attach photos, dates, and meaningful moments like family reunions, weddings, and festive gatherings in a private family space.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- End .content-->
-                    </div>
-                </div>
-
-            </div>
-        </section><!-- End Why Us Section -->
-
-        <section id="journey" class="journey section-bg">
-            <div class="container" data-aos="fade-up">
-                <div class="section-title">
-                    <h2>How It Works</h2>
-                    <p>Start preserving your family story in 3 simple steps</p>
-                </div>
-
-                <div class="row gy-4">
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-                        <div class="journey-card">
-                            <div class="step">01</div>
-                            <h4>Create Your Tree</h4>
-                            <p>Begin with yourself and add close relatives first. Bayau keeps every connection clear, even in multi-branch family networks.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-                        <div class="journey-card">
-                            <div class="step">02</div>
-                            <h4>Invite Your Family</h4>
-                            <p>Send invites so parents, siblings, and cousins can contribute profiles, photos, and family memories from anywhere.</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-                        <div class="journey-card">
-                            <div class="step">03</div>
-                            <h4>Preserve & Share</h4>
-                            <p>Keep your family history updated in one private, secure space and pass it on to future generations with pride.</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- ======= Hero Section ======= -->
+        <section
+            id="hero"
+            class="d-flex justify-content-center align-items-center"
+        >
+            <div
+                class="container position-relative"
+                data-aos="zoom-in"
+                data-aos-delay="100"
+            >
+                <h1>Build Your Family Tree, Together.</h1>
+                <h2>Your Family. Your Story. Your Bayau.</h2>
+                <a href="https://app.bayau.com" class="btn-get-started"
+                    >Start Your Family Tree</a
+                >
             </div>
         </section>
+        <!-- End Hero -->
 
-        <section id="faq" class="faq">
-            <div class="container" data-aos="fade-up">
-                <div class="section-title">
-                    <h2>FAQ</h2>
-                    <p>Common questions from families everywhere</p>
+        <main id="main">
+            <!-- ======= Why Us Section ======= -->
+            <section id="services" class="why-us">
+                <div class="container" data-aos="fade-up">
+                    <div class="row">
+                        <div class="col-lg-4 d-flex align-items-stretch">
+                            <div class="content">
+                                <h3>
+                                    Family Tree Services That Grow With Your
+                                    Family
+                                </h3>
+                                <p>
+                                    Whether you are recording your immediate
+                                    household or tracing roots across
+                                    generations, Bayau gives you practical tools
+                                    to build a trusted, private family record
+                                    together.
+                                </p>
+                                <div class="text-center">
+                                    <a
+                                        href="https://app.bayau.com"
+                                        class="more-btn"
+                                        >Learn More
+                                        <i class="bx bx-chevron-right"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-8 d-flex align-items-stretch"
+                            data-aos="zoom-in"
+                            data-aos-delay="100"
+                        >
+                            <div
+                                class="icon-boxes d-flex flex-column justify-content-center"
+                            >
+                                <div class="row">
+                                    <div
+                                        class="col-xl-4 d-flex align-items-stretch"
+                                    >
+                                        <div class="icon-box mt-4 mt-xl-0">
+                                            <i class="bx bx-sitemap"></i>
+                                            <h4>Smart Tree Builder</h4>
+                                            <p>
+                                                Add parents, siblings, spouses,
+                                                and children quickly—even across
+                                                large extended families.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-xl-4 d-flex align-items-stretch"
+                                    >
+                                        <div class="icon-box mt-4 mt-xl-0">
+                                            <i class="bx bx-group"></i>
+                                            <h4>Family Collaboration</h4>
+                                            <p>
+                                                Invite relatives living in
+                                                different towns or overseas to
+                                                co-manage profiles and keep
+                                                details accurate.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-xl-4 d-flex align-items-stretch"
+                                    >
+                                        <div class="icon-box mt-4 mt-xl-0">
+                                            <i class="bx bx-photo-album"></i>
+                                            <h4>Private Memory Vault</h4>
+                                            <p>
+                                                Attach photos, dates, and
+                                                meaningful moments like family
+                                                reunions, weddings, and festive
+                                                gatherings in a private family
+                                                space.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End .content-->
+                        </div>
+                    </div>
                 </div>
+            </section>
+            <!-- End Why Us Section -->
 
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeadingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faqOne" aria-expanded="true" aria-controls="faqOne">
-                                What is Bayau and who is it for?
-                            </button>
-                        </h2>
-                        <div id="faqOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                            Bayau is a family tree app designed for families who want to document, preserve, and share family history—from immediate households to extended ancestry across generations.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeadingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqTwo" aria-expanded="false" aria-controls="faqTwo">
-                                Can I invite my relatives to collaborate?
-                            </button>
-                        </h2>
-                        <div id="faqTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Yes. You can invite family members to contribute profiles, upload photos, and help keep family information up to date together, even when everyone lives in different places.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeadingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqThree" aria-expanded="false" aria-controls="faqThree">
-                                Is my family data private?
-                            </button>
-                        </h2>
-                        <div id="faqThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Yes. Bayau is designed as a private family space where you control who can view and contribute to your tree, stories, and photos.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="faqHeadingFour">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqFour" aria-expanded="false" aria-controls="faqFour">
-                                How do I start building my family tree?
-                            </button>
-                        </h2>
-                        <div id="faqFour" class="accordion-collapse collapse" aria-labelledby="faqHeadingFour" data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Start by creating your account, then add yourself and your closest family members first. From there, expand branch by branch and invite relatives to help complete details and shared memories.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="cta" class="cta">
-            <div class="container" data-aos="zoom-in">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <h3>Ready to map your family story?</h3>
-                        <p>Join Bayau to keep your family story private and organized in one place.</p>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a href="https://app.bayau.com" class="cta-btn">Create Free Account</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main><!-- End #main -->
-
-    <!-- ======= Footer ======= -->
-    <footer id="footer">
-
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-
-                    <div id="contact" class="col-lg-3 col-md-6 footer-contact">
-                        <h3>B A Y A U</h3>
+            <section id="journey" class="journey section-bg">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>How It Works</h2>
                         <p>
-                            H-08-10 Aeropod Commercial Center <br>
-                            Kota Kinabalu, Sabah,<br>
-                            Malaysia <br><br>
-                            <strong>Phone:</strong> +6088477401<br>
-                            <strong>Email:</strong> info@bayau.com<br>
+                            Start preserving your family story in 3 simple steps
                         </p>
                     </div>
 
-                    <div class="col-lg-4 col-md-6 footer-newsletter">
-                        <h4>Why Families Choose Bayau</h4>
-                        <p>Bayau helps families keep their heritage alive with an easy-to-use collaborative platform where each family tree stays private by default and under your control.</p>
+                    <div class="row gy-4">
+                        <div
+                            class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                        >
+                            <div class="journey-card">
+                                <div class="step">01</div>
+                                <h4>Create Your Tree</h4>
+                                <p>
+                                    Begin with yourself and add close relatives
+                                    first. Bayau keeps every connection clear,
+                                    even in multi-branch family networks.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                        >
+                            <div class="journey-card">
+                                <div class="step">02</div>
+                                <h4>Invite Your Family</h4>
+                                <p>
+                                    Send invites so parents, siblings, and
+                                    cousins can contribute profiles, photos, and
+                                    family memories from anywhere.
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-lg-4 col-md-6 d-flex align-items-stretch"
+                        >
+                            <div class="journey-card">
+                                <div class="step">03</div>
+                                <h4>Preserve & Share</h4>
+                                <p>
+                                    Keep your family history updated in one
+                                    private, secure space and pass it on to
+                                    future generations with pride.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
+            <section id="faq" class="faq">
+                <div class="container" data-aos="fade-up">
+                    <div class="section-title">
+                        <h2>FAQ</h2>
+                        <p>Common questions from families everywhere</p>
                     </div>
 
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeadingOne">
+                                <button
+                                    class="accordion-button"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faqOne"
+                                    aria-expanded="true"
+                                    aria-controls="faqOne"
+                                >
+                                    What is Bayau and who is it for?
+                                </button>
+                            </h2>
+                            <div
+                                id="faqOne"
+                                class="accordion-collapse collapse show"
+                                aria-labelledby="faqHeadingOne"
+                                data-bs-parent="#faqAccordion"
+                            >
+                                <div class="accordion-body">
+                                    Bayau is a family tree app designed for
+                                    families who want to document, preserve, and
+                                    share family history—from immediate
+                                    households to extended ancestry across
+                                    generations.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeadingTwo">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faqTwo"
+                                    aria-expanded="false"
+                                    aria-controls="faqTwo"
+                                >
+                                    Can I invite my relatives to collaborate?
+                                </button>
+                            </h2>
+                            <div
+                                id="faqTwo"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="faqHeadingTwo"
+                                data-bs-parent="#faqAccordion"
+                            >
+                                <div class="accordion-body">
+                                    Yes. You can invite family members to
+                                    contribute profiles, upload photos, and help
+                                    keep family information up to date together,
+                                    even when everyone lives in different
+                                    places.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeadingThree">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faqThree"
+                                    aria-expanded="false"
+                                    aria-controls="faqThree"
+                                >
+                                    Is my family data private?
+                                </button>
+                            </h2>
+                            <div
+                                id="faqThree"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="faqHeadingThree"
+                                data-bs-parent="#faqAccordion"
+                            >
+                                <div class="accordion-body">
+                                    Yes. Bayau is designed as a private family
+                                    space where you control who can view and
+                                    contribute to your tree, stories, and
+                                    photos.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="faqHeadingFour">
+                                <button
+                                    class="accordion-button collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faqFour"
+                                    aria-expanded="false"
+                                    aria-controls="faqFour"
+                                >
+                                    How do I start building my family tree?
+                                </button>
+                            </h2>
+                            <div
+                                id="faqFour"
+                                class="accordion-collapse collapse"
+                                aria-labelledby="faqHeadingFour"
+                                data-bs-parent="#faqAccordion"
+                            >
+                                <div class="accordion-body">
+                                    Start by creating your account, then add
+                                    yourself and your closest family members
+                                    first. From there, expand branch by branch
+                                    and invite relatives to help complete
+                                    details and shared memories.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cta" class="cta">
+                <div class="container" data-aos="zoom-in">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <h3>Ready to map your family story?</h3>
+                            <p>
+                                Join Bayau to keep your family story private and
+                                organized in one place.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-lg-end">
+                            <a href="https://app.bayau.com" class="cta-btn"
+                                >Create Free Account</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- End #main -->
+
+        <!-- ======= Footer ======= -->
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+                        <div
+                            id="contact"
+                            class="col-lg-3 col-md-6 footer-contact"
+                        >
+                            <h3>B A Y A U</h3>
+                            <p>
+                                H-08-10 Aeropod Commercial Center <br />
+                                Kota Kinabalu, Sabah,<br />
+                                Malaysia <br /><br />
+                                <strong>Phone:</strong> +6088477401<br />
+                                <strong>Email:</strong> info@bayau.com<br />
+                            </p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 footer-newsletter">
+                            <h4>Why Families Choose Bayau</h4>
+                            <p>
+                                Bayau helps families keep their heritage alive
+                                with an easy-to-use collaborative platform where
+                                each family tree stays private by default and
+                                under your control.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="container d-md-flex py-4">
-
-            <div class="me-md-auto text-center text-md-start">
-                <div class="copyright">
-                    &copy; Copyright <strong><span>Bayau</span></strong>. All Rights Reserved
+            <div class="container d-md-flex py-4">
+                <div class="me-md-auto text-center text-md-start">
+                    <div class="copyright">
+                        &copy; Copyright <strong><span>Bayau</span></strong
+                        >. All Rights Reserved
+                    </div>
+                </div>
+                <div
+                    class="social-links text-center text-md-right pt-3 pt-md-0"
+                >
+                    <a
+                        href="https://app.bayau.com"
+                        class="linkedin"
+                        aria-label="Open Bayau app"
+                        ><i class="bx bx-link-external"></i
+                    ></a>
                 </div>
             </div>
-            <div class="social-links text-center text-md-right pt-3 pt-md-0">
-                <a href="https://app.bayau.com" class="linkedin"><i class="bx bx-link-external"></i></a>
-            </div>
-        </div>
-    </footer><!-- End Footer -->
+        </footer>
+        <!-- End Footer -->
 
-    <div id="preloader"></div>
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+        <div id="preloader"></div>
+        <a
+            href="#"
+            class="back-to-top d-flex align-items-center justify-content-center"
+            ><i class="bi bi-arrow-up-short"></i
+        ></a>
 
-    <!-- Vendor JS Files -->
-    <script src="assets/vendor/aos/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
-    <script src="assets/vendor/purecounter/purecounter.js"></script>
-    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+        <!-- Vendor JS Files -->
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "name": "Bayau",
-          "url": "https://bayau.com/",
-          "logo": "https://bayau.com/assets/img/bayau_logo.png",
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+6088477401",
-            "contactType": "customer support",
-            "email": "info@bayau.com",
-            "areaServed": "MY"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "name": "Bayau",
-          "url": "https://bayau.com/"
-        },
-        {
-          "@type": "SoftwareApplication",
-          "name": "Bayau",
-          "applicationCategory": "LifestyleApplication",
-          "operatingSystem": "Web",
-          "url": "https://app.bayau.com",
-          "description": "A private-by-default family tree app designed for families to preserve heritage, traditions, photos, and stories across generations."
-        }
-      ]
-    }
-    </script>
-
-</body>
-
+        <!-- Template Main JS File -->
+        <script src="assets/js/main.js"></script>
+        <!-- Structured Data -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "Organization",
+                        "name": "Bayau",
+                        "url": "https://bayau.com/",
+                        "logo": "https://bayau.com/assets/img/bayau_logo.png",
+                        "contactPoint": {
+                            "@type": "ContactPoint",
+                            "telephone": "+6088477401",
+                            "contactType": "customer support",
+                            "email": "info@bayau.com",
+                            "areaServed": "MY"
+                        }
+                    },
+                    {
+                        "@type": "WebSite",
+                        "name": "Bayau",
+                        "url": "https://bayau.com/"
+                    },
+                    {
+                        "@type": "SoftwareApplication",
+                        "name": "Bayau",
+                        "applicationCategory": "LifestyleApplication",
+                        "operatingSystem": "Web",
+                        "url": "https://app.bayau.com",
+                        "description": "A private-by-default family tree app designed for families to preserve heritage, traditions, photos, and stories across generations."
+                    }
+                ]
+            }
+        </script>
+    </body>
 </html>

@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+__MACOSX
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
