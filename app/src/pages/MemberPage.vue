@@ -1,41 +1,55 @@
 <template>
   <q-page v-if="member" class="profile-page">
-    <q-btn flat round icon="arrow_back" class="back-btn" @click="$router.back()" />
-
     <!-- Hero -->
     <div class="hero">
-      <div class="hero-content text-center q-px-lg">
+      <div class="hero-content row items-center" style="padding: 12px 24px">
+        <q-btn
+          flat
+          round
+          icon="arrow_back"
+          @click="$router.back()"
+          style="color: rgba(255, 255, 255, 0.8)"
+        />
+        <!-- Photo -->
         <q-avatar
-          size="80px"
-          :color="genderColor(member.gender)"
+          size="72px"
+          :color="member.photo ? 'transparent' : genderColor(member.gender)"
           text-color="white"
-          font-size="36px"
+          font-size="32px"
           class="hero-avatar"
         >
-          <img v-if="member.photo" :src="member.photo" alt="" />
+          <img v-if="member.photo" :src="member.photo" style="object-fit: cover" />
           <template v-else>{{ initial }}</template>
         </q-avatar>
-        <h1 class="hero-name">{{ member.name }}</h1>
-        <p class="hero-sub">
-          {{ GENDERS[member.gender]?.label || member.gender }}
-          <template v-if="member.birthDate">
-            &middot; {{ formatYear(member.birthDate) }}</template
-          >
-          <template v-if="member.birthDate">
-            — {{ member.isDeceased ? formatYear(member.deathDate) || '?' : 'Present' }}
-          </template>
-        </p>
-        <div
-          class="hero-meta row justify-center q-gutter-x-md"
-          v-if="member.location || member.occupation"
-        >
-          <span v-if="member.location"
-            ><q-icon name="place" size="16px" /> {{ member.location }}</span
-          >
-          <span v-if="member.occupation"
-            ><q-icon name="work" size="16px" /> {{ member.occupation }}</span
-          >
+        <!-- Info -->
+        <div class="q-ml-md col self-center">
+          <div class="hero-name">{{ member.name }}</div>
+          <div class="hero-sub">
+            {{ GENDERS[member.gender]?.label || member.gender }}
+            <template v-if="member.birthDate">
+              &middot; {{ formatYear(member.birthDate) }}</template
+            >
+            <template v-if="member.birthDate">
+              — {{ member.isDeceased ? formatYear(member.deathDate) || '?' : 'Present' }}
+            </template>
+          </div>
+          <div class="hero-meta" v-if="member.location || member.occupation">
+            <span v-if="member.location"
+              ><q-icon name="place" size="14px" /> {{ member.location }}</span
+            >
+            <span v-if="member.occupation" class="q-ml-md"
+              ><q-icon name="work" size="14px" /> {{ member.occupation }}</span
+            >
+          </div>
         </div>
+        <q-btn
+          flat
+          round
+          icon="edit"
+          size="sm"
+          @click="showEdit = true"
+          style="color: rgba(255, 255, 255, 0.8)"
+        />
       </div>
     </div>
 
@@ -264,11 +278,6 @@
       </q-card-section>
     </q-card>
 
-    <!-- Edit FAB -->
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="edit" color="primary" @click="showEdit = true" />
-    </q-page-sticky>
-
     <LinkDialog v-model="showLink" :member-id="id" :initial-type="linkType" />
 
     <!-- Edit dialog -->
@@ -286,6 +295,31 @@
           <q-btn flat dense label="Save" @click="saveEdit" />
         </q-bar>
         <q-card-section class="q-gutter-md q-pt-lg">
+          <!-- Photo -->
+          <div class="text-center q-mb-sm">
+            <q-avatar size="80px" class="cursor-pointer" @click="photoInput?.click()">
+              <img
+                v-if="editPhoto"
+                :src="editPhoto"
+                style="object-fit: cover; width: 100%; height: 100%"
+              />
+              <q-icon v-else name="camera_alt" size="32px" color="grey-5" />
+            </q-avatar>
+            <div
+              class="text-caption text-primary q-mt-xs cursor-pointer"
+              @click="photoInput?.click()"
+            >
+              {{ editPhoto ? 'Change Photo' : 'Add Photo' }}
+            </div>
+          </div>
+          <input
+            ref="photoInput"
+            type="file"
+            accept="image/*"
+            hidden
+            @change="onPhotoSelected"
+          />
+
           <q-input v-model="editName" label="Full Name" filled autofocus />
           <q-select
             v-model="editGender"
@@ -329,12 +363,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
 import { useDB, useRows, GENDERS } from 'src/stores'
 import type { Member, Relationship } from 'src/stores'
 import LinkDialog from 'components/LinkDialog.vue'
 
-const $q = useQuasar()
 const route = useRoute()
 const db = useDB()
 const members = useRows<Member>('members')
@@ -356,17 +388,46 @@ const spouseRel = (sid: string) =>
   fromRels.value.find((r) => r.type === 'spouse' && r.toId === sid)
 
 function confirmDelete(targetId: string, linkType: string, name: string) {
-  $q.dialog({
-    title: 'Remove relationship',
-    message: `Remove ${name} from ${linkType === 'child' ? 'children' : linkType + 's'}?`,
-    cancel: true,
-    ok: { label: 'Remove', color: 'negative' },
-  }).onOk(() => deleteRel(targetId, linkType))
+  if (
+    window.confirm(
+      `Remove ${name} from ${linkType === 'child' ? 'children' : linkType + 's'}?`,
+    )
+  ) {
+    deleteRel(targetId, linkType)
+  }
 }
 
 function deleteRel(targetId: string, linkType: string) {
   // Map 'child' -> 'parent' since children are stored as parent-type relationships
   const relType = linkType === 'child' ? 'parent' : linkType
+
+  // For siblings: find shared parent relationships and delete one set
+  if (relType === 'sibling') {
+    // First try direct sibling relationship
+    const direct = rels.value.filter(
+      (r) =>
+        (r.fromId === targetId && r.toId === id.value) ||
+        (r.fromId === id.value && r.toId === targetId),
+    )
+    if (direct.length) {
+      direct.forEach((r) => db.delRow('relationships', r.id))
+      return
+    }
+    // Otherwise, find shared parents and delete parent→current relationships
+    const myParents = rels.value.filter((r) => r.toId === id.value && r.type === 'parent')
+    const theirParents = rels.value.filter(
+      (r) => r.toId === targetId && r.type === 'parent',
+    )
+    const sharedParentIds = myParents
+      .filter((r) => theirParents.some((tr) => tr.fromId === r.fromId))
+      .map((r) => r.fromId)
+    if (sharedParentIds.length) {
+      rels.value
+        .filter((r) => r.fromId === sharedParentIds[0] && r.toId === targetId)
+        .forEach((r) => db.delRow('relationships', r.id))
+    }
+    return
+  }
   const rel = rels.value.find((r) => {
     if (relType === 'parent' && linkType === 'parent') {
       // Adding a parent: r.fromId = parent, r.toId = current
@@ -375,13 +436,6 @@ function deleteRel(targetId: string, linkType: string) {
     if (relType === 'parent' && linkType === 'child') {
       // Current is parent of child: r.fromId = current, r.toId = child
       return r.fromId === id.value && r.toId === targetId && r.type === 'parent'
-    }
-    if (relType === 'sibling') {
-      return (
-        ((r.fromId === targetId && r.toId === id.value) ||
-          (r.fromId === id.value && r.toId === targetId)) &&
-        r.type === 'sibling'
-      )
     }
     // Spouse: current member is the source
     return r.fromId === id.value && r.toId === targetId && r.type === relType
@@ -423,9 +477,11 @@ const siblings = computed(() => {
 })
 
 const showEdit = ref(false)
+const photoInput = ref<HTMLInputElement | null>(null)
 const showLink = ref(false)
 const linkType = ref('spouse')
 const editName = ref('')
+const editPhoto = ref('')
 const editGender = ref('other')
 const editBirthDate = ref('')
 const editDeathDate = ref('')
@@ -440,6 +496,7 @@ const genderKeys = Object.keys(GENDERS)
 watch(member, (m) => {
   if (!m) return
   editName.value = m.name
+  editPhoto.value = m.photo || ''
   editGender.value = m.gender
   editBirthDate.value = m.birthDate
   editDeathDate.value = m.deathDate
@@ -450,6 +507,16 @@ watch(member, (m) => {
   editBio.value = m.bio
   editDeceased.value = m.isDeceased
 })
+
+function onPhotoSelected(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = () => {
+    editPhoto.value = reader.result as string
+  }
+  reader.readAsDataURL(file)
+}
 
 function saveEdit() {
   if (!member.value) return
@@ -462,7 +529,7 @@ function saveEdit() {
     location: editLocation.value,
     occupation: editOccupation.value,
     email: editEmail.value,
-    photo: member.value.photo,
+    photo: editPhoto.value,
     bio: editBio.value,
     isDeceased: editDeceased.value,
     createdAt: member.value.createdAt,
@@ -488,31 +555,26 @@ function genderColor(g: string) {
   background: #fdfaf5;
   min-height: 100vh;
 }
-.back-btn {
-  position: absolute;
-  top: 8px;
-  left: 4px;
-  z-index: 10;
-  color: white;
-}
 
 .hero {
   background: linear-gradient(160deg, #1b5e32, #2d8a4e, #3a6b3a);
-  padding: 48px 0 24px;
+  padding: 40px 0 20px;
+}
+.hero-content {
+  color: white;
 }
 .hero-avatar {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  margin-bottom: 8px;
+  flex-shrink: 0;
 }
 .hero-name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
-  margin: 0 0 2px;
-  color: #fff;
+  line-height: 1.2;
 }
 .hero-sub {
   font-size: 13px;
-  margin: 0;
+  margin-top: 2px;
   color: rgba(255, 255, 255, 0.85);
 }
 .hero-meta {
