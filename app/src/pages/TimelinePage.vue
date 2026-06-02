@@ -4,7 +4,8 @@
 
     <q-timeline v-if="sortedMemories.length > 0" color="primary">
       <q-timeline-entry
-        v-for="mm in sortedMemories" :key="mm.id"
+        v-for="mm in sortedMemories"
+        :key="mm.id"
         :title="mm.title"
         :subtitle="formatDate(mm.date)"
         :icon="typeIcon(mm.type)"
@@ -16,8 +17,14 @@
           <q-icon name="place" size="14px" /> {{ mm.location }}
         </div>
         <div class="q-mt-sm">
-          <q-chip v-for="mid in (mm.memberIds||'').split(',').filter(Boolean)" :key="mid"
-            size="sm" color="primary" text-color="white" :label="getMemberName(mid)" />
+          <q-chip
+            v-for="mid in (mm.memberIds || '').split(',').filter(Boolean)"
+            :key="mid"
+            size="sm"
+            color="primary"
+            text-color="white"
+            :label="getMemberName(mid)"
+          />
         </div>
       </q-timeline-entry>
     </q-timeline>
@@ -25,13 +32,62 @@
     <q-card v-else flat bordered class="q-pa-xl text-center">
       <q-icon name="timeline" size="80px" color="grey-5" />
       <div class="text-h6 text-grey-6 q-mt-md">Timeline Empty</div>
-      <div class="text-body1 text-grey q-mt-sm">Add memories to build your family timeline</div>
+      <div class="text-body1 text-grey q-mt-sm">
+        Add memories to build your family timeline
+      </div>
     </q-card>
+
+    <!-- Add FAB -->
+    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-btn fab icon="add" color="primary" @click="showAdd = true" />
+    </q-page-sticky>
+
+    <!-- Add dialog -->
+    <q-dialog v-model="showAdd" persistent>
+      <q-card style="width: 100%; max-width: 420px">
+        <q-bar class="bg-primary text-white">
+          <div class="text-weight-medium">Add Memory</div>
+          <q-space />
+          <q-btn flat dense icon="close" v-close-popup />
+        </q-bar>
+        <q-card-section class="q-gutter-sm">
+          <q-input v-model="form.title" label="Title" outlined autofocus />
+          <q-input
+            v-model="form.description"
+            label="Description"
+            type="textarea"
+            outlined
+          />
+          <q-select
+            v-model="form.type"
+            :options="typeOptions"
+            label="Type"
+            outlined
+            :option-label="
+              (o: string) =>
+                (MEMORY_TYPES as Record<string, { label: string }>)[o]?.label || o
+            "
+          />
+          <q-input v-model="form.date" label="Date" type="date" outlined />
+          <q-input v-model="form.location" label="Location" outlined />
+        </q-card-section>
+        <q-card-actions align="right" class="q-pb-md q-px-md">
+          <q-btn flat label="Cancel" color="grey" v-close-popup />
+          <q-btn
+            flat
+            label="Add"
+            color="primary"
+            @click="addMemory"
+            :disable="!form.title"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useDB, useRows, MEMORY_TYPES } from 'src/stores'
 import type { Memory } from 'src/stores'
 
@@ -39,8 +95,38 @@ const db = useDB()
 const memoryRows = useRows<Memory>('memories')
 
 const sortedMemories = computed(() =>
-  [...memoryRows.value].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  [...memoryRows.value].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  ),
 )
+
+const showAdd = ref(false)
+const form = reactive({
+  title: '',
+  description: '',
+  type: 'event',
+  date: '',
+  location: '',
+})
+const typeOptions = Object.keys(MEMORY_TYPES)
+
+function addMemory() {
+  db.setRow('memories', 'mm' + Date.now(), {
+    title: form.title,
+    description: form.description,
+    type: form.type,
+    date: form.date,
+    location: form.location,
+    mediaUrl: '',
+    memberIds: '',
+    createdAt: new Date().toISOString(),
+  })
+  form.title = ''
+  form.description = ''
+  form.date = ''
+  form.location = ''
+  showAdd.value = false
+}
 
 function getMemberName(id: string) {
   const row = db.getRow('members', id)
@@ -50,9 +136,20 @@ function typeIcon(t: string) {
   return (MEMORY_TYPES as Record<string, { icon: string }>)[t]?.icon || 'event'
 }
 function entryColor(t: string) {
-  return t === 'photo' ? 'primary' : t === 'event' ? 'accent' : t === 'document' ? 'info' : 'secondary'
+  return t === 'photo'
+    ? 'primary'
+    : t === 'event'
+      ? 'accent'
+      : t === 'document'
+        ? 'info'
+        : 'secondary'
 }
 function formatDate(d: string) {
-  if (!d) return ''; return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  if (!d) return ''
+  return new Date(d).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
 </script>

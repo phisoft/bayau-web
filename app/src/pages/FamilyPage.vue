@@ -35,17 +35,12 @@
       </div>
     </q-card>
 
-    <!-- FAB -->
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="person_add" color="primary" @click="showAdd = true" />
-    </q-page-sticky>
-
     <MemberFormDialog v-model="showAdd" />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useDB, useRowCount, useRows } from 'src/stores'
 import type { Member } from 'src/stores'
 import MemberCard from 'components/MemberCard.vue'
@@ -68,4 +63,11 @@ const filteredMembers = computed(() => {
 })
 
 const showAdd = ref(false)
+
+// Listen for add signal from bottom nav
+function onOpenAdd() {
+  showAdd.value = true
+}
+onMounted(() => window.addEventListener('bayau:open-add', onOpenAdd))
+onUnmounted(() => window.removeEventListener('bayau:open-add', onOpenAdd))
 </script>

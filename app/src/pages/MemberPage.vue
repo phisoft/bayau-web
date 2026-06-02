@@ -93,7 +93,7 @@
             size="xs"
             color="grey-5"
             class="q-ml-xs"
-            @click.stop="deleteRel(p.id, 'parent')"
+            @click.stop="confirmDelete(p.id, 'parent', p.name)"
           />
         </div>
       </q-card-section>
@@ -148,7 +148,7 @@
             size="xs"
             color="grey-5"
             class="q-ml-xs"
-            @click.stop="deleteRel(s.id, 'sibling')"
+            @click.stop="confirmDelete(s.id, 'sibling', s.name)"
           />
         </div>
       </q-card-section>
@@ -203,7 +203,7 @@
             size="xs"
             color="grey-5"
             class="q-ml-xs"
-            @click.stop="deleteRel(s.id, 'spouse')"
+            @click.stop="confirmDelete(s.id, 'spouse', s.name)"
           />
         </div>
       </q-card-section>
@@ -258,7 +258,7 @@
             size="xs"
             color="grey-5"
             class="q-ml-xs"
-            @click.stop="deleteRel(c.id, 'child')"
+            @click.stop="confirmDelete(c.id, 'child', c.name)"
           />
         </div>
       </q-card-section>
@@ -329,10 +329,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
 import { useDB, useRows, GENDERS } from 'src/stores'
 import type { Member, Relationship } from 'src/stores'
 import LinkDialog from 'components/LinkDialog.vue'
 
+const $q = useQuasar()
 const route = useRoute()
 const db = useDB()
 const members = useRows<Member>('members')
@@ -352,6 +354,15 @@ const spouses = computed(() => {
 })
 const spouseRel = (sid: string) =>
   fromRels.value.find((r) => r.type === 'spouse' && r.toId === sid)
+
+function confirmDelete(targetId: string, linkType: string, name: string) {
+  $q.dialog({
+    title: 'Remove relationship',
+    message: `Remove ${name} from ${linkType === 'child' ? 'children' : linkType + 's'}?`,
+    cancel: true,
+    ok: { label: 'Remove', color: 'negative' },
+  }).onOk(() => deleteRel(targetId, linkType))
+}
 
 function deleteRel(targetId: string, linkType: string) {
   // Map 'child' -> 'parent' since children are stored as parent-type relationships
