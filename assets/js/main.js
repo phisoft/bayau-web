@@ -57,6 +57,22 @@
   }
 
   /**
+   * Header scroll effect
+   */
+  let header = select("#header");
+  if (header) {
+    const toggleHeaderScrolled = () => {
+      if (window.scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    };
+    window.addEventListener("load", toggleHeaderScrolled);
+    onscroll(document, toggleHeaderScrolled);
+  }
+
+  /**
    * Mobile nav toggle
    */
   on("click", ".mobile-nav-toggle", function (e) {
