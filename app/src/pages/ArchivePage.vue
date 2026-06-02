@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="text-h6 text-primary text-weight-bold q-mb-md">Archive</div>
+    <div class="text-h6 text-primary text-weight-bold q-mb-md">Events</div>
 
     <!-- Type filter chips -->
     <div class="row q-gutter-sm q-mb-md">
@@ -127,7 +127,21 @@
                 (MEMORY_TYPES as Record<string, { label: string }>)[o]?.label || o
             "
           />
-          <q-input v-model="newDate" label="Date" type="date" outlined />
+          <q-input
+            v-model="newDate"
+            label="Date"
+            mask="####-##-##"
+            outlined
+            hint="YYYY-MM-DD"
+          >
+            <template #append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="newDate" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
           <q-input v-model="newLocation" label="Location" outlined />
         </q-card-section>
         <q-card-actions align="right" class="q-pb-md q-px-md">

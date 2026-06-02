@@ -50,7 +50,7 @@
             active-class="text-primary"
           >
             <q-item-section avatar><q-icon name="photo_album" /></q-item-section>
-            <q-item-section>Archive</q-item-section>
+            <q-item-section>Events</q-item-section>
           </q-item>
           <q-item
             clickable
@@ -110,7 +110,7 @@
           dense
           color="grey-7"
           icon="photo_album"
-          label="Archive"
+          label="Events"
           :class="{ 'text-primary': route.name === 'archive' }"
           :to="{ name: 'archive' }"
         />

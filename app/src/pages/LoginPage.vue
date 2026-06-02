@@ -10,14 +10,16 @@
             Bridging generations, honoring ancestors.
           </p>
 
-          <SignIn
+          <SignUp
+            v-if="!signedIn"
             :appearance="appearance"
-            :routing="'path'"
-            :path="'/login'"
-            :sign-up-url="'/login'"
-            :after-sign-in-url="'/'"
-            :after-sign-up-url="'/'"
+            routing="path"
+            path="/login"
+            sign-in-url="/login"
           />
+          <div v-else class="flex flex-center q-py-xl">
+            <q-spinner color="primary" size="2em" />
+          </div>
 
           <p class="text-caption text-grey-5 q-mt-lg q-mb-xl">
             By continuing, you agree to our Terms of Service and Privacy Policy.
@@ -35,9 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { SignIn } from '@clerk/vue'
+import { computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { SignUp, useAuth } from '@clerk/vue'
 
+const router = useRouter()
+const { isSignedIn } = useAuth()
+
+// Redirect when signed in
+watch(isSignedIn, (val) => {
+  if (val) router.replace('/')
+})
+
+const signedIn = computed(() => isSignedIn.value)
 const year = computed(() => new Date().getFullYear())
 
 const appearance = {

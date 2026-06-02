@@ -6,26 +6,37 @@
       <q-timeline-entry
         v-for="mm in sortedMemories"
         :key="mm.id"
-        :title="mm.title"
-        :subtitle="formatDate(mm.date)"
-        :icon="typeIcon(mm.type)"
+        :icon="
+          entryColor(mm.type) === 'primary'
+            ? 'photo'
+            : entryColor(mm.type) === 'accent'
+              ? 'event'
+              : 'description'
+        "
         :color="entryColor(mm.type)"
         side="left"
       >
-        <div>{{ mm.description }}</div>
-        <div v-if="mm.location" class="text-caption text-grey q-mt-xs">
-          <q-icon name="place" size="14px" /> {{ mm.location }}
-        </div>
-        <div class="q-mt-sm">
-          <q-chip
-            v-for="mid in (mm.memberIds || '').split(',').filter(Boolean)"
-            :key="mid"
-            size="sm"
-            color="primary"
-            text-color="white"
-            :label="getMemberName(mid)"
-          />
-        </div>
+        <q-card flat bordered class="timeline-card">
+          <q-card-section class="q-py-sm">
+            <div class="text-subtitle2 text-weight-medium">{{ mm.title }}</div>
+            <div class="text-caption text-grey-6">{{ formatDate(mm.date) }}</div>
+            <div class="text-body2 text-grey-7 q-mt-sm">{{ mm.description }}</div>
+            <div v-if="mm.location" class="text-caption text-grey q-mt-sm">
+              <q-icon name="place" size="14px" /> {{ mm.location }}
+            </div>
+            <div class="q-mt-sm">
+              <q-badge outline :color="entryColor(mm.type)" :label="mm.type" size="sm" />
+              <q-chip
+                v-for="mid in (mm.memberIds || '').split(',').filter(Boolean)"
+                :key="mid"
+                size="sm"
+                color="primary"
+                text-color="white"
+                :label="getMemberName(mid)"
+              />
+            </div>
+          </q-card-section>
+        </q-card>
       </q-timeline-entry>
     </q-timeline>
 
@@ -68,7 +79,21 @@
                 (MEMORY_TYPES as Record<string, { label: string }>)[o]?.label || o
             "
           />
-          <q-input v-model="form.date" label="Date" type="date" outlined />
+          <q-input
+            v-model="form.date"
+            label="Date"
+            mask="####-##-##"
+            outlined
+            hint="YYYY-MM-DD"
+          >
+            <template #append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="form.date" />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
           <q-input v-model="form.location" label="Location" outlined />
         </q-card-section>
         <q-card-actions align="right" class="q-pb-md q-px-md">
@@ -133,9 +158,6 @@ function getMemberName(id: string) {
   const row = db.getRow('members', id)
   return (row?.name as string) || id
 }
-function typeIcon(t: string) {
-  return (MEMORY_TYPES as Record<string, { icon: string }>)[t]?.icon || 'event'
-}
 function entryColor(t: string) {
   return t === 'photo'
     ? 'primary'
@@ -154,3 +176,10 @@ function formatDate(d: string) {
   })
 }
 </script>
+
+<style scoped>
+.timeline-card {
+  border-radius: 12px;
+  border: 1px solid rgba(139, 94, 60, 0.08);
+}
+</style>

@@ -8,46 +8,31 @@ declare module '@vue/runtime-core' {
   }
 }
 
-let currentStore: BayauStore | null = null
+let store: BayauStore
 let currentPersister: ReturnType<typeof createLocalPersister> | null = null
 
-export function getStorageKey(treeId: string): string {
-  return `bayau_tree_${treeId}`
-}
-
 export async function switchTree(treeId: string) {
+  // Save current tree before switching
   if (currentPersister) {
+    await currentPersister.save()
     currentPersister.stopAutoSave()
-    currentPersister.stopAutoLoad()
     currentPersister.destroy()
     currentPersister = null
   }
 
-  currentStore = createBayauStore()
-  const key = getStorageKey(treeId)
+  // Start loading new tree
+  const key = `bayau_tree_${treeId}`
+  currentPersister = createLocalPersister(store, key)
 
-  currentPersister = createLocalPersister(currentStore, key)
+  // Load data from new tree
   await currentPersister.startAutoLoad()
   await currentPersister.startAutoSave()
-
-  // Seed demo data only if tree is empty
-  setTimeout(() => {
-    if (currentStore && Object.keys(currentStore.getTable('members')).length === 0) {
-      // Keep empty — user will add members
-    }
-  }, 100)
-
-  return currentStore
 }
 
-export function getStore(): BayauStore | null {
-  return currentStore
-}
-
-export default boot(async ({ app }) => {
-  currentStore = createBayauStore()
-  app.provide('db', currentStore)
-  app.config.globalProperties.$db = currentStore
+export default boot(({ app }) => {
+  store = createBayauStore()
+  app.provide('db', store)
+  app.config.globalProperties.$db = store
 })
 
 export { BayauStore }

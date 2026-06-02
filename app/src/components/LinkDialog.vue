@@ -148,11 +148,10 @@ const results = computed(() => {
 })
 
 function link(toId: string) {
-  // Map types: 'child' in UI = 'parent' in DB (current member is parent of selected)
   const dbType = linkType.value === 'child' ? 'parent' : linkType.value
-  // For parent type: the selected member is the parent of current member
   const fromId = linkType.value === 'parent' ? toId : props.memberId
   const targetId = linkType.value === 'parent' ? props.memberId : toId
+
   db.setRow('relationships', uid('r'), {
     fromId,
     toId: targetId,
@@ -163,6 +162,7 @@ function link(toId: string) {
     notes: '',
     createdAt: new Date().toISOString(),
   })
+
   search.value = ''
   show.value = false
 }

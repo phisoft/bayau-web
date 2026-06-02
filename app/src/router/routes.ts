@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
         path: 'archive',
         name: 'archive',
         component: () => import('pages/ArchivePage.vue'),
-        meta: { title: 'Archive', tab: 'archive', auth: true },
+        meta: { title: 'Events', tab: 'archive', auth: true },
       },
       {
         path: 'timeline',

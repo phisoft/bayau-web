@@ -12,9 +12,13 @@ export default defineRouter(function () {
   Router.beforeEach(async (to) => {
     if (to.name === 'login') return true
 
+    // Wait for Clerk to initialize
+    const clerk = (window as any).Clerk
+    if (!clerk) return true // Clerk not loaded yet, allow navigation
+
     try {
-      const clerk = (window as any).Clerk
-      if (!clerk?.user) {
+      await clerk.load()
+      if (!clerk.user) {
         return { name: 'login' }
       }
       return true

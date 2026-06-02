@@ -22,14 +22,11 @@
       <div class="col">
         <div class="text-body1 text-weight-medium">{{ member.name }}</div>
         <div class="text-caption text-grey-6">
-          <span v-if="member.location">{{ member.location }} &middot; </span>
-          <span>{{ genderLabel }}</span>
+          <span v-if="member.location">{{ member.location }}</span>
         </div>
       </div>
 
-      <!-- Badge + chevron -->
-      <q-badge outline :color="genderColor" :label="genderLabel" />
-      <q-icon name="chevron_right" color="grey-4" class="q-ml-sm" size="22px" />
+      <q-icon name="chevron_right" color="grey-4" size="22px" />
     </q-card-section>
   </q-card>
 </template>
@@ -53,12 +50,6 @@ const genderColor = computed(
   () =>
     (GENDERS as Record<string, { color: string }>)[props.member.gender]?.color ||
     'grey-6',
-)
-
-const genderLabel = computed(
-  () =>
-    (GENDERS as Record<string, { label: string }>)[props.member.gender]?.label ||
-    props.member.gender,
 )
 </script>
 

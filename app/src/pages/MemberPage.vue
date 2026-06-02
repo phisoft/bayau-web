@@ -11,16 +11,19 @@
           style="color: rgba(255, 255, 255, 0.8)"
         />
         <!-- Photo -->
-        <q-avatar
-          size="72px"
-          :color="member.photo ? 'transparent' : genderColor(member.gender)"
-          text-color="white"
-          font-size="32px"
-          class="hero-avatar"
-        >
-          <img v-if="member.photo" :src="member.photo" style="object-fit: cover" />
-          <template v-else>{{ initial }}</template>
-        </q-avatar>
+        <div class="hero-avatar-wrapper">
+          <img v-if="member.photo" :src="member.photo" class="hero-photo" />
+          <q-avatar
+            v-else
+            size="72px"
+            :color="genderColor(member.gender)"
+            text-color="white"
+            font-size="32px"
+            class="hero-avatar"
+          >
+            {{ initial }}
+          </q-avatar>
+        </div>
         <!-- Info -->
         <div class="q-ml-md col self-center">
           <div class="hero-name">{{ member.name }}</div>
@@ -30,7 +33,7 @@
               &middot; {{ formatYear(member.birthDate) }}</template
             >
             <template v-if="member.birthDate">
-              — {{ member.isDeceased ? formatYear(member.deathDate) || '?' : 'Present' }}
+              — {{ member.deathDate ? formatYear(member.deathDate) : 'Present' }}
             </template>
           </div>
           <div class="hero-meta" v-if="member.location || member.occupation">
@@ -281,29 +284,24 @@
     <LinkDialog v-model="showLink" :member-id="id" :initial-type="linkType" />
 
     <!-- Edit dialog -->
-    <q-dialog
-      v-model="showEdit"
-      maximized
-      transition-show="slide-up"
-      transition-hide="slide-down"
-    >
-      <q-card class="edit-full">
+    <q-dialog v-model="showEdit" persistent>
+      <q-card style="width: 100%; max-width: 420px">
         <q-bar class="bg-primary text-white">
           <q-btn flat dense icon="close" v-close-popup />
           <div class="text-weight-medium">Edit Profile</div>
           <q-space />
           <q-btn flat dense label="Save" @click="saveEdit" />
         </q-bar>
-        <q-card-section class="q-gutter-md q-pt-lg">
+        <q-card-section class="q-gutter-md q-pa-lg">
           <!-- Photo -->
-          <div class="text-center q-mb-sm">
-            <q-avatar size="80px" class="cursor-pointer" @click="photoInput?.click()">
+          <div class="text-center">
+            <q-avatar size="72px" class="cursor-pointer" @click="photoInput?.click()">
               <img
                 v-if="editPhoto"
                 :src="editPhoto"
                 style="object-fit: cover; width: 100%; height: 100%"
               />
-              <q-icon v-else name="camera_alt" size="32px" color="grey-5" />
+              <q-icon v-else name="camera_alt" size="28px" color="grey-5" />
             </q-avatar>
             <div
               class="text-caption text-primary q-mt-xs cursor-pointer"
@@ -320,36 +318,38 @@
             @change="onPhotoSelected"
           />
 
-          <q-input v-model="editName" label="Full Name" filled autofocus />
-          <q-select
+          <q-input v-model="editName" label="Full Name" outlined autofocus />
+          <q-btn-toggle
             v-model="editGender"
-            :options="genderKeys"
-            label="Gender"
-            filled
-            :option-label="
-              (o: string) => (GENDERS as Record<string, { label: string }>)[o]?.label || o
-            "
+            spread
+            no-caps
+            toggle-color="primary"
+            :options="[
+              { label: 'Male', value: 'male', icon: 'man' },
+              { label: 'Female', value: 'female', icon: 'woman' },
+            ]"
           />
-          <q-separator />
-          <div class="text-caption text-uppercase text-grey-6">Life Dates</div>
-          <q-input v-model="editBirthDate" label="Birth Date" type="date" filled />
-          <q-toggle v-model="editDeceased" label="Deceased" />
-          <q-input
-            v-if="editDeceased"
-            v-model="editDeathDate"
-            label="Death Date"
-            type="date"
-            filled
-          />
-          <q-separator />
-          <div class="text-caption text-uppercase text-grey-6">Location & Work</div>
-          <q-input v-model="editLocation" label="Current Location" filled />
-          <q-input v-model="editBirthplace" label="Birthplace" filled />
-          <q-input v-model="editOccupation" label="Occupation" filled />
-          <q-separator />
-          <div class="text-caption text-uppercase text-grey-6">Contact & Bio</div>
-          <q-input v-model="editEmail" label="Email" type="email" filled />
-          <q-input v-model="editBio" label="Bio" type="textarea" filled autogrow />
+          <div class="row q-col-gutter-sm">
+            <div class="col">
+              <q-input
+                v-model="editBirthDate"
+                label="Birth Year"
+                outlined
+                hint="e.g. 1980"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                v-model="editDeathDate"
+                label="Death Year"
+                outlined
+                hint="If deceased"
+              />
+            </div>
+          </div>
+          <q-input v-model="editLocation" label="Location" outlined />
+          <q-input v-model="editOccupation" label="Occupation" outlined />
+          <q-input v-model="editBio" label="Bio" type="textarea" outlined />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -444,8 +444,18 @@ function deleteRel(targetId: string, linkType: string) {
 }
 
 const parents = computed(() => {
-  const ids = toRels.value.map((r) => r.fromId)
-  return members.value.filter((m) => ids.includes(m.id))
+  // Direct parents (fromId = parent, toId = me)
+  const directIds = toRels.value.map((r) => r.fromId)
+  // Parents via siblings: my siblings' parents are my parents too
+  const siblingIds = siblings.value.map((s) => s.id)
+  const inheritedIds = new Set<string>()
+  for (const sid of siblingIds) {
+    rels.value
+      .filter((r) => r.toId === sid && r.type === 'parent')
+      .forEach((r) => inheritedIds.add(r.fromId))
+  }
+  const allIds = new Set([...directIds, ...inheritedIds])
+  return members.value.filter((m) => allIds.has(m.id))
 })
 const parentLabel = (pid: string) => {
   const p = members.value.find((m) => m.id === pid)
@@ -453,27 +463,48 @@ const parentLabel = (pid: string) => {
 }
 
 const children = computed(() => {
-  const ids = fromRels.value.filter((r) => r.type === 'parent').map((r) => r.toId)
-  return members.value.filter((m) => ids.includes(m.id))
+  // Direct children (I am the parent)
+  const ids = new Set(
+    fromRels.value.filter((r) => r.type === 'parent').map((r) => r.toId),
+  )
+  // Children from spouse (step-children)
+  for (const sp of spouses.value) {
+    rels.value
+      .filter((r) => r.fromId === sp.id && r.type === 'parent')
+      .forEach((r) => ids.add(r.toId))
+  }
+  return members.value.filter((m) => ids.has(m.id))
 })
 const childLabel = (cid: string) =>
   fromRels.value.find((r) => r.type === 'parent' && r.toId === cid)?.subtype || 'Child'
 
 const siblings = computed(() => {
   // Direct sibling relationships
-  const directIds = rels.value
-    .filter((r) => (r.fromId === id.value || r.toId === id.value) && r.type === 'sibling')
-    .map((r) => (r.fromId === id.value ? r.toId : r.fromId))
+  const directIds = new Set(
+    rels.value
+      .filter(
+        (r) => (r.fromId === id.value || r.toId === id.value) && r.type === 'sibling',
+      )
+      .map((r) => (r.fromId === id.value ? r.toId : r.fromId)),
+  )
+
   // Siblings via shared parents
   const parentIds = toRels.value.map((r) => r.fromId)
-  const sharedIds = new Set<string>()
   for (const pid of parentIds) {
     rels.value
       .filter((r) => r.fromId === pid && r.type === 'parent' && r.toId !== id.value)
-      .forEach((r) => sharedIds.add(r.toId))
+      .forEach((r) => directIds.add(r.toId))
   }
-  const allIds = new Set([...directIds, ...sharedIds])
-  return members.value.filter((m) => allIds.has(m.id))
+
+  // Transitive: each direct sibling's siblings are also my siblings
+  for (const sid of [...directIds]) {
+    rels.value
+      .filter((r) => (r.fromId === sid || r.toId === sid) && r.type === 'sibling')
+      .forEach((r) => directIds.add(r.fromId === sid ? r.toId : r.fromId))
+  }
+  directIds.delete(id.value) // remove self
+
+  return members.value.filter((m) => directIds.has(m.id))
 })
 
 const showEdit = ref(false)
@@ -482,31 +513,28 @@ const showLink = ref(false)
 const linkType = ref('spouse')
 const editName = ref('')
 const editPhoto = ref('')
-const editGender = ref('other')
+const editGender = ref('male')
 const editBirthDate = ref('')
 const editDeathDate = ref('')
 const editLocation = ref('')
-const editBirthplace = ref('')
 const editOccupation = ref('')
-const editEmail = ref('')
 const editBio = ref('')
-const editDeceased = ref(false)
-const genderKeys = Object.keys(GENDERS)
 
-watch(member, (m) => {
-  if (!m) return
-  editName.value = m.name
-  editPhoto.value = m.photo || ''
-  editGender.value = m.gender
-  editBirthDate.value = m.birthDate
-  editDeathDate.value = m.deathDate
-  editLocation.value = m.location
-  editBirthplace.value = m.birthplace
-  editOccupation.value = m.occupation
-  editEmail.value = m.email
-  editBio.value = m.bio
-  editDeceased.value = m.isDeceased
-})
+watch(
+  member,
+  (m) => {
+    if (!m) return
+    editName.value = m.name
+    editPhoto.value = m.photo || ''
+    editGender.value = m.gender || 'male'
+    editBirthDate.value = m.birthDate
+    editDeathDate.value = m.deathDate
+    editLocation.value = m.location
+    editOccupation.value = m.occupation
+    editBio.value = m.bio
+  },
+  { immediate: true },
+)
 
 function onPhotoSelected(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
@@ -524,14 +552,14 @@ function saveEdit() {
     name: editName.value,
     gender: editGender.value,
     birthDate: editBirthDate.value,
-    deathDate: editDeceased.value ? editDeathDate.value : '',
-    birthplace: editBirthplace.value,
+    deathDate: editDeathDate.value,
+    birthplace: member.value.birthplace,
     location: editLocation.value,
     occupation: editOccupation.value,
-    email: editEmail.value,
+    email: member.value.email,
     photo: editPhoto.value,
     bio: editBio.value,
-    isDeceased: editDeceased.value,
+    isDeceased: member.value.isDeceased,
     createdAt: member.value.createdAt,
     updatedAt: new Date().toISOString(),
   })
@@ -563,9 +591,18 @@ function genderColor(g: string) {
 .hero-content {
   color: white;
 }
+.hero-avatar-wrapper {
+  flex-shrink: 0;
+}
+.hero-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
 .hero-avatar {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  flex-shrink: 0;
 }
 .hero-name {
   font-size: 20px;

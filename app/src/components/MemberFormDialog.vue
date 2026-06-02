@@ -9,16 +9,26 @@
 
       <q-card-section class="q-gutter-sm">
         <q-input v-model="form.name" label="Full Name" outlined autofocus />
-        <q-select
-          v-model="form.gender"
-          :options="genderKeys"
-          label="Gender"
-          outlined
-          :option-label="
-            (o: string) => (GENDERS as Record<string, { label: string }>)[o]?.label || o
-          "
-        />
+        <div class="q-mb-sm">
+          <q-btn-toggle
+            v-model="form.gender"
+            spread
+            no-caps
+            toggle-color="primary"
+            :options="[
+              { label: 'Male', value: 'male', icon: 'man' },
+              { label: 'Female', value: 'female', icon: 'woman' },
+            ]"
+          />
+        </div>
         <q-input v-model="form.location" label="Location" outlined />
+        <q-input
+          v-model="form.ageOrYear"
+          label="Age or Birth Year"
+          outlined
+          hint="e.g. 45 or 1980"
+          @update:model-value="onAgeChange"
+        />
       </q-card-section>
 
       <q-card-actions align="right" class="q-pb-md q-px-md">
@@ -30,8 +40,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
-import { useDB, GENDERS } from 'src/stores'
+import { reactive, computed } from 'vue'
+import { useDB } from 'src/stores'
 import { uid } from 'src/stores/ulid'
 
 const props = defineProps<{
@@ -49,8 +59,30 @@ const show = computed({
 })
 
 const db = useDB()
-const form = reactive({ name: '', gender: 'other', location: '' })
-const genderKeys = Object.keys(GENDERS)
+const form = reactive({ name: '', gender: 'male', location: '', ageOrYear: '' })
+let birthYear = ''
+
+function onAgeChange(val: string | number | null) {
+  const v = String(val || '').trim()
+  if (!v) {
+    birthYear = ''
+    return
+  }
+  const n = parseInt(v, 10)
+  if (isNaN(n)) {
+    birthYear = ''
+    return
+  }
+  if (n >= 1000 && n <= 2100) {
+    // Birth year entered directly
+    birthYear = String(n)
+  } else if (n > 0 && n <= 150) {
+    // Age entered — convert to birth year
+    birthYear = String(new Date().getFullYear() - n)
+  } else {
+    birthYear = ''
+  }
+}
 
 function submit() {
   const id = uid('m')
@@ -58,7 +90,7 @@ function submit() {
   db.setRow('members', id, {
     name: form.name,
     gender: form.gender,
-    birthDate: '',
+    birthDate: birthYear,
     deathDate: '',
     birthplace: '',
     location: form.location,
@@ -72,6 +104,8 @@ function submit() {
   })
   form.name = ''
   form.location = ''
+  form.ageOrYear = ''
+  birthYear = ''
   show.value = false
   emit('saved', id)
 }
