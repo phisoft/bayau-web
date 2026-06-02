@@ -12,6 +12,7 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,json}\""
   },
   "dependencies": {
+    "@clerk/vue": "^2.3.2",
     "@quasar/extras": "^1.16.0",
     "axios": "^1.7.0",
     "pinia": "^3.0.4",

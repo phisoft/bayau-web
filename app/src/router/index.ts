@@ -9,5 +9,19 @@ export default defineRouter(function () {
     history: createWebHistory('/'),
   })
 
+  Router.beforeEach(async (to) => {
+    if (to.name === 'login') return true
+
+    try {
+      const clerk = (window as any).Clerk
+      if (!clerk?.user) {
+        return { name: 'login' }
+      }
+      return true
+    } catch {
+      return { name: 'login' }
+    }
+  })
+
   return Router
 })

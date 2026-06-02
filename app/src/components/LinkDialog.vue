@@ -80,6 +80,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useDB, useRows, GENDERS, RELATION_TYPES } from 'src/stores'
+import { uid } from 'src/stores/ulid'
 import MemberFormDialog from 'components/MemberFormDialog.vue'
 import type { Member } from 'src/stores'
 
@@ -152,7 +153,7 @@ function link(toId: string) {
   // For parent type: the selected member is the parent of current member
   const fromId = linkType.value === 'parent' ? toId : props.memberId
   const targetId = linkType.value === 'parent' ? props.memberId : toId
-  db.setRow('relationships', 'r' + Date.now(), {
+  db.setRow('relationships', uid('r'), {
     fromId,
     toId: targetId,
     type: dbType,

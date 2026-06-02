@@ -14,6 +14,13 @@
         <q-toolbar-title class="text-weight-bold" style="letter-spacing: 2px">
           B A Y A U
         </q-toolbar-title>
+
+        <q-btn flat round v-if="user" @click="leftDrawerOpen = true">
+          <q-avatar size="32px">
+            <img :src="user.imageUrl" />
+          </q-avatar>
+        </q-btn>
+        <q-btn v-else flat label="Sign In" :to="{ name: 'login' }" />
       </q-toolbar>
     </q-header>
 
@@ -65,7 +72,12 @@
       </q-scroll-area>
       <div class="q-pa-md">
         <q-separator />
-        <q-item clickable v-ripple :to="{ name: 'login' }" class="q-mt-sm">
+        <q-item
+          clickable
+          v-ripple
+          @click="signOut(() => router.push({ name: 'login' }))"
+          class="q-mt-sm"
+        >
           <q-item-section avatar><q-icon name="logout" color="grey-6" /></q-item-section>
           <q-item-section class="text-grey-6">Sign Out</q-item-section>
         </q-item>
@@ -129,17 +141,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useClerk, useUser } from '@clerk/vue'
+import { switchTree } from 'src/boot/tinybase'
+import { uid } from 'src/stores/ulid'
 
 const route = useRoute()
 const router = useRouter()
+const { signOut } = useClerk()
+const { user } = useUser()
+
+// Auto-join or create tree when user signs in
+watch(
+  () => user.value?.id,
+  async (userId) => {
+    if (!userId) return
+    const key = `bayau_active_tree_${userId}`
+    let treeId = localStorage.getItem(key)
+    if (!treeId) {
+      treeId = uid('tree')
+      localStorage.setItem(key, treeId)
+    }
+    await switchTree(treeId)
+  },
+  { immediate: true },
+)
+
 const leftDrawerOpen = ref(false)
 const year = computed(() => new Date().getFullYear())
 
 const showTabs = computed(() => {
   const names = ['login']
-  return !names.includes(route.name as string)
+  return !names.includes(route.name as string) && !!user.value
 })
 
 function emitAdd() {

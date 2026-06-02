@@ -1,5 +1,4 @@
 import { createStore } from 'tinybase'
-import { createLocalPersister } from 'tinybase/persisters/persister-browser'
 
 // ═══════════════════════════════════════════════════════════
 // Schema — matches Stitch UI screens:
@@ -93,24 +92,6 @@ export function createBayauStore() {
 
   store.setTablesSchema(TABLES)
   store.setValuesSchema(VALUES)
-
-  // Auto-persist to localStorage
-  const persister = createLocalPersister(store, 'bayau')
-  persister
-    .startAutoLoad({}, () => {
-      // Only seed demo data if store is empty after loading
-      if (Object.keys(store.getTable('members')).length === 0) {
-        seedDemoData(store)
-      }
-    })
-    .then(() => persister.startAutoSave())
-
-  // Fallback: seed immediately if no persisted data loads quickly
-  setTimeout(() => {
-    if (Object.keys(store.getTable('members')).length === 0) {
-      seedDemoData(store)
-    }
-  }, 100)
 
   return store
 }

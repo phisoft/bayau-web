@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { useDB, GENDERS } from 'src/stores'
+import { uid } from 'src/stores/ulid'
 
 const props = defineProps<{
   modelValue: boolean
@@ -52,7 +53,7 @@ const form = reactive({ name: '', gender: 'other', location: '' })
 const genderKeys = Object.keys(GENDERS)
 
 function submit() {
-  const id = 'm' + Date.now()
+  const id = uid('m')
   const now = new Date().toISOString()
   db.setRow('members', id, {
     name: form.name,

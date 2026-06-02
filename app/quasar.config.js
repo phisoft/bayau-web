@@ -2,7 +2,7 @@ import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig(() => {
   return {
-    boot: ['tinybase'],
+    boot: ['tinybase', 'clerk'],
     css: ['app.scss'],
     extras: ['roboto-font', 'material-icons'],
     build: {

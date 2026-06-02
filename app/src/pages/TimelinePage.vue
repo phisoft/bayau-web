@@ -89,6 +89,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive } from 'vue'
 import { useDB, useRows, MEMORY_TYPES } from 'src/stores'
+import { uid } from 'src/stores/ulid'
 import type { Memory } from 'src/stores'
 
 const db = useDB()
@@ -111,7 +112,7 @@ const form = reactive({
 const typeOptions = Object.keys(MEMORY_TYPES)
 
 function addMemory() {
-  db.setRow('memories', 'mm' + Date.now(), {
+  db.setRow('memories', uid('mm'), {
     title: form.title,
     description: form.description,
     type: form.type,

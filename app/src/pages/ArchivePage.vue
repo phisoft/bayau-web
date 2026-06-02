@@ -148,6 +148,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useDB, useRowCount, useRows, MEMORY_TYPES } from 'src/stores'
+import { uid } from 'src/stores/ulid'
 import type { Memory } from 'src/stores'
 
 const db = useDB()
@@ -181,7 +182,7 @@ function onPhotoPicked(e: Event) {
 }
 
 function addMemory() {
-  db.setRow('memories', 'mm' + Date.now(), {
+  db.setRow('memories', uid('mm'), {
     title: newTitle.value,
     description: newDesc.value,
     type: newType.value,

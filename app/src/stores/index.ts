@@ -10,4 +10,5 @@ export default defineStore(() => {
 export { useDB } from './useDB'
 export { useValue, useRowCount, useRows, useRow } from './useTinyBase'
 export { createBayauStore, RELATION_TYPES, GENDERS, MEMORY_TYPES } from './tinybase'
+export { uid } from './ulid'
 export type { BayauStore, Member, Relationship, Memory, Invitation } from './tinybase'

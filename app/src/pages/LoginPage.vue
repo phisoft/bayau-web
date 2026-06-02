@@ -1,104 +1,74 @@
 <template>
   <q-layout>
     <q-page-container>
-      <div class="login-page flex flex-center q-pa-lg">
-        <q-card class="login-card" flat bordered>
-          <q-card-section class="text-center q-pb-none">
-            <q-avatar
-              size="72px"
-              color="primary"
-              text-color="white"
-              icon="account_tree"
-            />
-            <h4 class="text-primary text-weight-bold q-mb-xs">Welcome Back</h4>
-            <p class="text-grey-7 q-mt-none">
-              Sign in to continue building your family tree
-            </p>
-          </q-card-section>
+      <div class="login-page">
+        <div class="login-content text-center">
+          <div class="text-h3 text-weight-bold text-primary font-serif q-mb-sm">
+            Bayau
+          </div>
+          <p class="text-body1 text-grey-7 q-mb-xl">
+            Bridging generations, honoring ancestors.
+          </p>
 
-          <q-card-section>
-            <q-form class="q-gutter-md">
-              <q-input
-                v-model="email"
-                type="email"
-                label="Email"
-                outlined
-                rounded
-                autocomplete="email"
-              >
-                <template #prepend>
-                  <q-icon name="mail" />
-                </template>
-              </q-input>
+          <SignIn
+            :appearance="appearance"
+            :routing="'path'"
+            :path="'/login'"
+            :sign-up-url="'/login'"
+            :after-sign-in-url="'/'"
+            :after-sign-up-url="'/'"
+          />
 
-              <q-input
-                v-model="password"
-                :type="showPassword ? 'text' : 'password'"
-                label="Password"
-                outlined
-                rounded
-                autocomplete="current-password"
-              >
-                <template #prepend>
-                  <q-icon name="lock" />
-                </template>
-                <template #append>
-                  <q-icon
-                    :name="showPassword ? 'visibility_off' : 'visibility'"
-                    class="cursor-pointer"
-                    @click="showPassword = !showPassword"
-                  />
-                </template>
-              </q-input>
-
-              <div class="row items-center justify-between">
-                <q-checkbox v-model="rememberMe" label="Remember me" color="primary" />
-                <q-btn flat dense color="primary" label="Forgot password?" />
-              </div>
-
-              <q-btn
-                label="Sign In"
-                color="primary"
-                size="lg"
-                rounded
-                class="full-width"
-                @click="$router.push({ name: 'family' })"
-              />
-            </q-form>
-          </q-card-section>
-
-          <q-card-section class="text-center q-pt-none">
-            <span class="text-grey-7">New to Bayau?</span>
-            <q-btn flat dense color="primary" label="Create account" />
-          </q-card-section>
-        </q-card>
+          <p class="text-caption text-grey-5 q-mt-lg q-mb-xl">
+            By continuing, you agree to our Terms of Service and Privacy Policy.
+          </p>
+          <p class="text-body2 text-grey-6 font-italic q-mb-xl">
+            "Heritage is the bridge from our roots to our future."
+          </p>
+          <div class="text-caption text-grey-5">
+            &copy; {{ year }} Bayau. All rights reserved.
+          </div>
+        </div>
       </div>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed } from 'vue'
+import { SignIn } from '@clerk/vue'
 
-const email = ref('')
-const password = ref('')
-const rememberMe = ref(true)
-const showPassword = ref(false)
+const year = computed(() => new Date().getFullYear())
+
+const appearance = {
+  elements: {
+    card: 'shadow-none bg-transparent',
+    headerTitle: 'text-grey-8',
+    headerSubtitle: 'text-grey-6',
+    formButtonPrimary: 'bg-primary text-white',
+    footerActionText: 'text-grey-6',
+    footerActionLink: 'text-primary',
+  },
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .login-page {
   min-height: 100vh;
-  background:
-    linear-gradient(135deg, rgba(45, 138, 78, 0.9), rgba(27, 94, 50, 0.86)),
-    radial-gradient(circle at top left, rgba(200, 132, 60, 0.35), transparent 40%);
+  background: #fdfaf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.login-card {
+.login-content {
   width: 100%;
-  max-width: 440px;
-  border-radius: 24px;
-  padding: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  max-width: 400px;
+  padding: 48px 16px;
+}
+.font-serif {
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+.font-italic {
+  font-style: italic;
 }
 </style>
