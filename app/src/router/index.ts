@@ -12,13 +12,12 @@ export default defineRouter(function () {
   Router.beforeEach(async (to) => {
     if (to.name === 'login') return true
 
-    // Wait for Clerk to initialize
-    const clerk = (window as any).Clerk
-    if (!clerk) return true // Clerk not loaded yet, allow navigation
+    // Wait for Clerk to be ready
+    await waitForClerk()
 
     try {
-      await clerk.load()
-      if (!clerk.user) {
+      const clerk = (window as any).Clerk
+      if (!clerk?.session) {
         return { name: 'login' }
       }
       return true
@@ -29,3 +28,17 @@ export default defineRouter(function () {
 
   return Router
 })
+
+function waitForClerk(): Promise<void> {
+  return new Promise((resolve) => {
+    if ((window as any).Clerk) return resolve()
+
+    let attempts = 0
+    const check = setInterval(() => {
+      if ((window as any).Clerk || ++attempts > 50) {
+        clearInterval(check)
+        resolve()
+      }
+    }, 100)
+  })
+}

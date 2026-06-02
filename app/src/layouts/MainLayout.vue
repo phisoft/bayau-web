@@ -143,7 +143,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useClerk, useUser } from '@clerk/vue'
+import { useClerk, useUser, useSession } from '@clerk/vue'
 import { switchTree } from 'src/boot/tinybase'
 import { uid } from 'src/stores/ulid'
 
@@ -151,6 +151,17 @@ const route = useRoute()
 const router = useRouter()
 const { signOut } = useClerk()
 const { user } = useUser()
+const { session } = useSession()
+
+// Redirect to login if session expires
+watch(
+  () => session.value,
+  (s) => {
+    if (!s && route.name !== 'login') {
+      router.push({ name: 'login' })
+    }
+  },
+)
 
 // Auto-join or create tree when user signs in
 watch(
